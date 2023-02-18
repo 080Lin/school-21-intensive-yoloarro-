@@ -1,39 +1,32 @@
 C=gcc
 CFLAGS=-Wall -Werror -Wextra
-SUPER_COMPILE=$(C) $(CFLAGS)
-EXE=../build/graph
-BUILD_FILES=graph.o draw.o parse.o dynamic.o calculate.o
+BUILD_PATH=-o ../build/
+BUILD_SOURCE=s21_string.o s21_string_test.c
 
-style:
-	cp ../materials/linters/.clang-format .clang-format
-	clang-format -i *.c *.h
-	clang-format -n *.c *.h
-	cppcheck --enable=all .
-	rm .clang-format
-	leaks -atExit -- $(EXE)
+all: strlen_tests strcmp_tests strcpy_tests strcat_tests strchr_tests strstr_tests
 
-all: $(BUILD_FILES)
-	$(SUPER_COMPILE) $(BUILD_FILES) -o $(EXE)
+strlen_tests: s21_string.o
+	$(C) $(CFLAGS) -D Quest_1 $(BUILD_SOURCE) $(BUILD_PATH)Quest_1
 
-run: rebuild
-	./$(EXE)
+strcmp_tests: s21_string.o
+	$(C) $(CFLAGS) -D Quest_2 $(BUILD_SOURCE) $(BUILD_PATH)Quest_2
 
-dynamic.o:
-	$(SUPER_COMPILE) -c dynamic.c dynamic.h
+strcpy_tests: s21_string.o
+	$(C) $(CFLAGS) -D Quest_3 $(BUILD_SOURCE) $(BUILD_PATH)Quest_3
 
-parse.o:
-	$(SUPER_COMPILE) -c parse.c parse.h
+strcat_tests: s21_string.o
+	$(C) $(CFLAGS) -D Quest_4 $(BUILD_SOURCE) $(BUILD_PATH)Quest_4
 
-graph.o:
-	$(SUPER_COMPILE) -c graph.c
+strchr_tests: s21_string.o
+	$(C) $(CFLAGS) -D Quest_5 $(BUILD_SOURCE) $(BUILD_PATH)Quest_5
 
-draw.o:
-	$(SUPER_COMPILE) -c draw.c draw.h
+strstr_tests: s21_string.o
+	$(C) $(CFLAGS) -D Quest_6 $(BUILD_SOURCE) $(BUILD_PATH)Quest_6
 
-calculate.o:
-	$(SUPER_COMPILE) -c calculate.c calculate.h
-
-clean:
-	rm -f *.o *.gch ../build/*
+s21_string.o: s21_string.c s21_string.h
+	$(C) $(CFLAGS) -c s21_string.c
 
 rebuild: clean all
+
+clean:
+	rm -rf *.o ../build/* *.out
